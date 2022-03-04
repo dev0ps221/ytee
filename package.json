@@ -1,0 +1,36 @@
+{
+  "dependencies": {
+    "@tek-tech/ears": "^0.0.3-beta-1",
+    "youtube-dl-exec": "^2.0.7",
+    "youtube-search-without-api-key": "^1.0.7"
+  },
+  "name": "ytee",
+  "description": "Ytee, a wrapper around youtube-download-exec and youtube-search-without-api-key",
+  "version": "1.0.0",
+  "main": "ytee.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "node ytee.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dev0ps221/ytee.git"
+  },
+  "keywords": [
+    "nodejs",
+    "youtube",
+    "downloader",
+    "ytdownload",
+    "seybatou",
+    "El",
+    "Hadji",
+    "Seybatou",
+    "Mbengue"
+  ],
+  "author": "El Hadji Seybatou Mbengue (TEK-TECH)",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "bugs": {
+    "url": "https://github.com/dev0ps221/ytee/issues"
+  },
+  "homepage": "https://github.com/dev0ps221/ytee#readme"
+}
