@@ -6,7 +6,7 @@
   },
   "name": "ytee",
   "description": "Ytee, a wrapper around youtube-download-exec and youtube-search-without-api-key",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "ytee.js",
   "devDependencies": {},
   "scripts": {
