@@ -158,7 +158,8 @@ class YTeeSearchResult extends Ear{
     this.when(
       'gotdownloaddata',(data)=>{
         this.getDownloadLink(
-          links=>{
+          'mp4'
+          ,links=>{
             this.downloadlinks = links
             this.gotdownloadlinks = true
             this.trigger('gotdownloadlinks',links)
