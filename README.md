@@ -3,35 +3,77 @@
 
 [![](https://data.jsdelivr.com/v1/package/npm/ytee/badge)](https://www.jsdelivr.com/package/npm/ytee)
 
-> A lightweight, intuitive wrapper for the YouTube Data API to generate tree-like structures of channels, playlists, and videos.
+> An event-driven YouTube search and stream extractor operating entirely WITHOUT a YouTube API key.
 
 [![npm version](https://shields.io)](https://npmjs.com)
-[![license](https://shields.io)](https://github.com)
 
-Tired of digging through complex YouTube Data API responses just to list out a channel's structure? **ytee** abstracts the API chaos and gives you a clean, structured tree representation of YouTube content.
+Are you tired of dealing with Google Cloud quotas and API keys? **ytee** leverages powerful scrapers and extraction binaries under the hood. It delivers raw search results and actual stream arrays through a clean, event-driven architecture.
 
 ## 🚀 Features
-- **Tree Generation:** Automatically maps out playlists and their videos in a visual hierarchy.
-- **Lightweight:** Zero bloat, focusing strictly on data fetching and organization.
-- **Easy Integration:** Works perfectly with both CommonJS and ES Modules.
+- **API-Key Free:** Search and extract content without touching Google Console.
+- **Event-Driven:** Uses the custom event-emitting logic of `@tek-tech/ears`.
+- **Download Links:** Automatically parses direct `.mp4` URLs and filesizes.
 
 ## 📦 Installation
+This package relies on Python 3.9+ under the hood to run `youtube-dl-exec` extraction properly.
 ```bash
 npm install ytee
 ```
 
-## 🛠️ Quick Start
+## 🛠️ Usage
+
+### 🚦 Initialize and Search
+The `Searcher` handles scraping YouTube. Hook into the `ready` event, and execute searches immediately.
+
 ```javascript
-const ytee = require('ytee');
+const { Searcher } = require('ytee');
 
-// Initialize with your YouTube API Key
-const yt = new ytee('YOUR_API_KEY');
+// Wait for Searcher to initialize
+Searcher.on('ready', () => {
+    console.log('Searcher is ready to go!');
+    
+    Searcher.search('SpaceX Starship launch', (results) => {
+         results.map(video => {
+             console.log('Found Video:', video.getTitle());
+             console.log('URL:', video.getData('url'));
+         });
+    });
+});
+```
 
-// Fetch a tree representation of a playlist
-yt.getPlaylistTree('PLAYLIST_ID')
-  .then(tree => console.log(tree))
-  .catch(err => console.error(err));
+### 📥 Hook into Download Streams
+Each search result maps to a separate processing instance. You can wait on its internal ready state to pull raw formats and sizes.
+
+```javascript
+Searcher.on('ready', () => {
+    Searcher.search('Lofi hip hop beats', (results) => {
+        const firstVideo = results[0];
+
+        // Wait for extraction to parse formats
+        firstVideo.whenReady(() => {
+            firstVideo.getDownloadLink('mp4', (linkData) => {
+                if (linkData) {
+                    console.log('MP4 URL:', linkData.dl_link);
+                    console.log('Filesize:', linkData.filesize);
+                }
+            });
+        });
+    });
+});
+```
+
+### 🎛️ Direct Download Instantiation
+If you already have a target URL and don't need to search, initiate a single targeted dump.
+
+```javascript
+const { Download } = require('ytee');
+
+const stream = new Download('https://youtube.com');
+
+stream.whenGotData((data) => {
+    console.log('Available formats:', data.requested_formats.map(f => f.ext));
+});
 ```
 
 ## 📄 License
-MIT © [Your Name / @dev0ps221]
+MIT © [El Hadji Seybatou Mbengue / @dev0ps221]
